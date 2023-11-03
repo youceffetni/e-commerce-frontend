@@ -1,12 +1,12 @@
-import React, { useRef, useState } from 'react'
+import React from 'react'
 import Typography from '@mui/material/Typography'
-import { Alert, AlertTitle, Box, Button, InputLabel, Link, MenuItem, Select, TextField } from '@mui/material'
+import { Alert, AlertTitle, Box,Stack, Button, Link, MenuItem, Paper, Select, TextField } from '@mui/material'
 import Grid from '@mui/material/Unstable_Grid2';
 import { useStateContext } from '../../contexts/AppContextProvider';
+import { KeyboardArrowRight } from '@mui/icons-material';
 
-
-export default function ShippingStep() {
-    const { token, user ,order,setOrder} = useStateContext();
+export default function ShippingStep({children,handleNext}) {
+    const { token, user ,order,setOrder,cartItems} = useStateContext();
     
     const handleInputChange=(e,field)=>{
         
@@ -20,7 +20,7 @@ export default function ShippingStep() {
  
 
 return (
-    <div>
+    <Paper sx={{p:"15px"}}>
             <Typography variant="h6" sx={{ textAlign: "center" }}>Shipping informations</Typography>
             <br />
             {!token && <Alert severity='info'>
@@ -128,6 +128,18 @@ return (
 
                 
         </Box>
-    </div>
+
+        <Stack   sx={{flexDirection:{xs:"column",sm:"row"} ,gap:"8px",pt: "32px" }}>
+       
+               {children}
+           
+
+         
+            <Button sx={{ width:{sm:"50%",}, }} endIcon={<KeyboardArrowRight/>}  onClick={handleNext} variant='contained' disabled={cartItems.length===0}>
+                     Proced to Payment
+            </Button>
+            
+        </Stack>
+    </Paper>
 )
 }

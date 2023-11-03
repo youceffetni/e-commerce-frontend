@@ -6,18 +6,18 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Alert, Container, Paper, Stack } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
+
 
 import CartStep from "./CartStep"
 import ShippingStep from "./ShippingStep"
 import { useStateContext } from '../../contexts/AppContextProvider';
-import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
+
 import PaymentStep from './PaymentStep';
+import { KeyboardArrowLeft } from '@mui/icons-material';
 
 
 
 
-const comp=[<CartStep/>,<ShippingStep/>,<PaymentStep/>]
 
 const steps = ['Cart', 'Shipping', 'Payment'];
 
@@ -54,7 +54,34 @@ export default function index() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  React.useEffect(() => {
 
+
+  switch (activeStep){
+
+    case 0:
+      document.title = 'Order Now - Check your cart';
+      break;
+    
+    case 1:
+      document.title = 'Order Now - Shipping informations';
+      break;
+
+    case 2:
+      document.title = 'Order Now - Payment';
+      break;
+    default:
+      document.title = 'Your order finished';
+     
+
+  }
+   
+   
+
+
+      
+
+  }, [activeStep]);
   return (
     <Container sx={{my:"16px"}}>
       <Box sx={{ width: '100%' }}>
@@ -73,7 +100,7 @@ export default function index() {
             </Stepper>
 
                 <br/>
-           <Grid container spacing={1}>
+       
                   {activeStep === steps.length ? (
                     <Paper sx={{p:"15px"}}>
                           <Typography sx={{ mt: 2, mb: 1 }}>
@@ -87,58 +114,25 @@ export default function index() {
                           
                     </Paper>
                       ) : (
-                        <Grid xs={12} md={8}>
-                            <Paper sx={{p:"15px"}}>
+                      <>
+                        {activeStep==0 && <CartStep handleNext={handleNext}/>}
 
-                            {/*Steps content*/}
-                              <Box>
-                                {comp[activeStep]}
-                              </Box>
+                        {activeStep==1 && <ShippingStep handleNext={handleNext}>
+                        {!(activeStep === 0) && <Button sx={{flexGrow:1}} startIcon={<KeyboardArrowLeft/>}  variant='contained' onClick={handleBack}>Back </Button>}
+                          </ShippingStep>
+                       
+                        }
+                        {activeStep==2 && <PaymentStep handleNext={handleNext}>
+                        {!(activeStep === 0) && <Button sx={{flexGrow:1}} startIcon={<KeyboardArrowLeft/>}  variant='contained' onClick={handleBack}>Back </Button>}
+                        </PaymentStep>
 
-                            {/* Step Controls */}
-                            <Stack  direction="row" justifyContent="space-between" sx={{ pt: "32px" }}>
-                                {!(activeStep === 0) && <Button startIcon={<KeyboardArrowLeft/>}  variant='contained' onClick={handleBack}>Back </Button>}
-                             
-                                {
-                                  activeStep === 0 && 
-                                  <Button endIcon={<KeyboardArrowRight/>}  onClick={handleNext} variant='contained' disabled={cartItems.length===0}>
-                                    Proced to shipping
-                                  </Button>
-                                }
-                                {
-                                  activeStep === 1 && 
-                                  <Button endIcon={<KeyboardArrowRight/>}  onClick={handleNext} variant='contained' disabled={cartItems.length===0}>
-                                    Proced to Payment
-                                  </Button>
-                                }
-                                {
-                                  activeStep === 2 && 
-                                  <Button endIcon={<KeyboardArrowRight/>}  onClick={handleNext} variant='contained' disabled={cartItems.length===0}>
-                                    Order Now
-                                  </Button>
-                                }
-                            </Stack>
-
-                            </Paper>
-                        </Grid>
+                        }
+                      </>
+                      
+                      
                       )}
-              {activeStep < 2 && <Grid xs={12} md={4}> 
-                    <Paper sx={{p:"15px"}}>
-                          <Typography variant="h6" sx={{textAlign:"center"}}>Order information</Typography>
-                          <br/>
-                          <Typography variant="body1" ><strong>Date:</strong> {`${new Date().getDate()}/${new Date().getMonth()}/${new Date().getFullYear()}`}</Typography>
-                          <Typography variant="body1" ><strong>N° of order:</strong> 9.</Typography>
-                          <Typography variant="body1" ><strong>Cart quantity:</strong> {cartQuantityItems()} items.</Typography>
-                          <Typography variant="body1" ><strong>Discount:</strong> 0%.</Typography>
-                          <Typography variant="body1" ><strong>Shipping Rate:</strong> 450DA.</Typography>
-                          <Typography variant="body1" ><strong>Cart amount:</strong> {cartTotalAmount()} DA.</Typography>
-
-                          <Typography variant="h6" sx={{textAlign:"center"}}><strong>Total to pay: </strong>26450DA.</Typography>
-                          
-                          
-                    </Paper>
-              </Grid>}
-           </Grid>
+             
+          
     </Box>
     </Container>
   );

@@ -6,7 +6,7 @@ import { Alert, Button ,IconButton, Paper, Stack, Typography } from '@mui/materi
 import { Add,Close, Remove } from '@mui/icons-material';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
-
+import {  KeyboardArrowRight } from '@mui/icons-material';
 
 
 const CustomButton = styled(Button)({
@@ -18,8 +18,8 @@ const CustomButton = styled(Button)({
 
 
 
-export default function CartStep() {
-  const {cartItems,removeCartItems,handleQuantity}=useStateContext();
+export default function CartStep({handleNext}) {
+  const {cartItems,removeCartItems,handleQuantity,cartTotalAmount,cartQuantityItems}=useStateContext();
 
 
   const Item=({item})=>{
@@ -48,7 +48,7 @@ export default function CartStep() {
         </Stack>
        </Box>
   
-       {cartItems.length>1 && <IconButton onClick={()=>removeCartItems(item)} sx={{position:"absolute",top:10,right:16}}>
+       {cartItems.length>1 && <IconButton onClick={()=>removeCartItems(item)} sx={{position:"absolute",top:0,right:0}}>
          <Close/>
        </IconButton>}
     </Stack>
@@ -61,16 +61,46 @@ export default function CartStep() {
 
 
 
-        <>
-          <Typography variant='h6' sx={{textAlign:'center'}}>Your cart shopping</Typography>
-          <br/>
-          <Stack spacing={2}>
-                
-              {cartItems.length >0 && cartItems.map((item,i)=><Item key={i} item={item}/>)}
-              {cartItems.length <1 && <Alert severity='warning'>Cart is empty</Alert>}
+ 
+      <Stack sx={{flexDirection:{xs:"column",md:"row"},gap:"16px"}}  >
+        <Paper sx={{flexGrow:1,p:"15px"}}>
+       
+              <Typography variant='h6' sx={{textAlign:'center'}}>Your cart shopping</Typography>
+              <br/>
+              <Stack spacing={2}>
                     
-          </Stack>
-        </>
+                  {cartItems.length >0 && cartItems.map((item,i)=><Item key={i} item={item}/>)}
+                  {cartItems.length <1 && <Alert severity='warning'>Cart is empty</Alert>}
+                        
+              </Stack>
+                <br/>
+         
+               
+               
+                <Button sx={{width:"100%"}} endIcon={<KeyboardArrowRight/>}  onClick={handleNext} variant='contained' disabled={cartItems.length===0}>
+                  Proced to shipping
+                </Button>
+          
+            
+        </Paper>
+        
+        <Paper sx={{p:"15px" ,maxHeight:"275px"}}>
+              <Typography variant="h6" sx={{textAlign:"center"}}>Order information</Typography>
+              <br/>
+              <Typography variant="body1" ><strong>Date:</strong> {`${new Date().getDate()}/${new Date().getMonth()}/${new Date().getFullYear()}`}</Typography>
+              <Typography variant="body1" ><strong>N° of order:</strong> 9.</Typography>
+              <Typography variant="body1" ><strong>Cart quantity:</strong> {cartQuantityItems()} items.</Typography>
+              <Typography variant="body1" ><strong>Discount:</strong> 0%.</Typography>
+              <Typography variant="body1" ><strong>Shipping Rate:</strong> 450DA.</Typography>
+              <Typography variant="body1" ><strong>Cart amount:</strong> {cartTotalAmount()} DA.</Typography>
+              <br/>
+              <Typography variant="h6" sx={{textAlign:{sm:"center"}}}><strong>Total to pay: </strong><span style={{color:"#090"}}>35555 DA</span></Typography>
+              
+              
+        </Paper>
+       
+       </Stack>
+   
   
   );
 }
