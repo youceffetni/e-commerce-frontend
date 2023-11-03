@@ -1,8 +1,9 @@
-# React + Vite
+This is frontend side  of an e-commerce web site that developped with reactJs ,Material-UI and react-router-dom libreries,i linked it with a backend app by REST API (you will find the repo in my github accpunt) and I used only Context API for manage states of the app .
+Features that have been developed :
+-JWT authentication.
+-switch between dark mode & light mode theme.
+-notifcations .
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+-cart section :
+  - user can add,remove and increase qunatity of products at the cart .
+  - user can make orders.
